@@ -19,7 +19,7 @@ const GoogleMap = () => {
   const position: Position = { lat: 38.200965, lng: -77.589154 };
 
   return (
-    <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY}>
+    <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY!}>
       <div className="w-full h-full">
         <Map defaultZoom={13} defaultCenter={position} mapId={process.env.NEXT_PUBLIC_MAP_ID}>
           <AdvancedMarker position={position}>
