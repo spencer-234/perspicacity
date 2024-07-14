@@ -63,8 +63,6 @@ const handler = NextAuth({
 
             if (profile || user) {
                 const selected = profile ? profile : user;
-
-                console.log(profile);
     
                 try {
                     await connectToDB();

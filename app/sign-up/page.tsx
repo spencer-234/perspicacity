@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useState, FormEvent } from "react"
 import { checkEmptyInputs } from "@/utils/checkEmptyInputs";
+import { useRouter } from "next/navigation";
 
 interface Inputs {
     firstName: string;
@@ -13,6 +14,8 @@ interface Inputs {
 }
 
 const SignUp = () => {
+
+    const router = useRouter();
 
     const [inputs, setInputs] = useState<Inputs>({
         firstName: "",
@@ -48,10 +51,13 @@ const SignUp = () => {
                     body: JSON.stringify(inputs),
                 }).then((data) => data.json());
                 setSubmitting(false);
-                console.log(res);
+
                 if (res.error) {
                     setErrorMessage(res.error);
+                } else if (res.message === "User Created") {
+                    router.push("/login");
                 }
+
             } catch (error) {
                 setErrorMessage("Something went wrong");
                 setSubmitting(false);
