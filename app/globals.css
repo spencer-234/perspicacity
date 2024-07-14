@@ -65,7 +65,21 @@ body {
   }
 
   .nav-link {
-    @apply hover:text-green-400 cursor-pointer;
+    @apply hover:text-green-400 cursor-pointer border-b-2 pb-3 border-gray-500 w-full text-end lg:border-none lg:pb-0 lg:w-fit;
+  }
+
+  .open-mobile {
+    animation: slideIn 200ms forwards;
+  }
+
+  @keyframes slideIn {
+    from {
+      right: -600px;
+    }
+
+    to {
+      right: -20px;
+    }
   }
 
   @keyframes blinking {

@@ -10,6 +10,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Perspicacity GovCon",
   description: "Your Partner in Government Contract Success. Driving GovCon Success through People, Projects, and Technology.",
+  icons: {
+    icon: 'assets/logo.png',
+  },
+  // need keywords
 };
 
 export default function RootLayout({
