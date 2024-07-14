@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useState, FormEvent } from "react"
 import { checkEmptyInputs } from "@/utils/checkEmptyInputs";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface Inputs {
     firstName: string;
@@ -16,6 +17,8 @@ interface Inputs {
 const SignUp = () => {
 
     const router = useRouter();
+
+    const { data: session } = useSession();
 
     const [inputs, setInputs] = useState<Inputs>({
         firstName: "",
@@ -69,71 +72,75 @@ const SignUp = () => {
     }
 
     return (
-        <section className="w-screen h-[calc(100vh-120px)] center-flex px-3">
-            <div className="w-full h-[500px] border border-white center-flex bg-[url('/assets/sign-up-mobile-bg.jpg')] md:bg-none bg-cover rounded-lg overflow-hidden max-w-[1050px] md:auth-shadow">
-                <div className="w-full h-full flex items-center flex-col bg-black bg-opacity-80 px-5 gap-7 pt-14 md:flex-1">
-                    <h2 className="font-bold text-3xl self-start w-full text-start pb-1 border-b-2 border-green-400 main-shadow">Sign up</h2>
-                    <form className="w-full center-flex flex-col z-10 gap-5 max-w-[600px]" onSubmit={(e) => handleSubmit(e)}>
-                        <div className="flex justify-between items-center gap-5 w-full">
-                            <input
-                                type="text"
-                                required
-                                placeholder="First Name"
-                                name="firstName"
-                                value={inputs.firstName}
-                                className="py-1 px-2 outline-none border-b-2 border-white bg-slate-900 md:text-lg w-full flex-1"
-                                onChange={(e) => handleChange(e)}
-                            />
-                            <input
-                                type="text"
-                                required
-                                placeholder="Last Name"
-                                name="lastName"
-                                value={inputs.lastName}
-                                className="py-1 px-2 outline-none border-b-2 border-white bg-slate-900 md:text-lg w-full flex-1"
-                                onChange={(e) => handleChange(e)}
-                            />
+        <>
+            {!session?.user ? (
+                <section className="w-screen h-[calc(100vh-120px)] center-flex px-3">
+                    <div className="w-full h-[500px] border border-white center-flex bg-[url('/assets/sign-up-mobile-bg.jpg')] md:bg-none bg-cover rounded-lg overflow-hidden max-w-[1050px] md:auth-shadow">
+                        <div className="w-full h-full flex items-center flex-col bg-black bg-opacity-80 px-5 gap-7 pt-14 md:flex-1">
+                            <h2 className="font-bold text-3xl self-start w-full text-start pb-1 border-b-2 border-green-400 main-shadow">Sign up</h2>
+                            <form className="w-full center-flex flex-col z-10 gap-5 max-w-[600px]" onSubmit={(e) => handleSubmit(e)}>
+                                <div className="flex justify-between items-center gap-5 w-full">
+                                    <input
+                                        type="text"
+                                        required
+                                        placeholder="First Name"
+                                        name="firstName"
+                                        value={inputs.firstName}
+                                        className="py-1 px-2 outline-none border-b-2 border-white bg-slate-900 md:text-lg w-full flex-1"
+                                        onChange={(e) => handleChange(e)}
+                                    />
+                                    <input
+                                        type="text"
+                                        required
+                                        placeholder="Last Name"
+                                        name="lastName"
+                                        value={inputs.lastName}
+                                        className="py-1 px-2 outline-none border-b-2 border-white bg-slate-900 md:text-lg w-full flex-1"
+                                        onChange={(e) => handleChange(e)}
+                                    />
+                                </div>
+                                <input
+                                    type="email"
+                                    required
+                                    placeholder="Email"
+                                    name="email"
+                                    value={inputs.email}
+                                    className="py-1 px-2 outline-none border-b-2 border-white bg-slate-900 md:text-lg w-full"
+                                    onChange={(e) => handleChange(e)}
+                                />
+                                <input
+                                    type="password"
+                                    required
+                                    placeholder="Password"
+                                    name="password"
+                                    value={inputs.password}
+                                    className="py-1 px-2 outline-none border-b-2 border-white bg-slate-900 md:text-lg w-full"
+                                    onChange={(e) => handleChange(e)}
+                                />
+                                <input
+                                    type="password"
+                                    required
+                                    name="confirmPassword"
+                                    placeholder="Confirm Password"
+                                    className="py-1 px-2 outline-none border-b-2 border-white bg-slate-900 md:text-lg w-full"
+                                    value={inputs.confirmPassword}
+                                    onChange={(e) => handleChange(e)}
+                                />
+                                <button
+                                    type="submit"
+                                    className="bg-green-400 hover:bg-green-600 border border-white rounded-lg py-1 px-5 text-lg md:text-xl text-black font-semibold w-[70%]"
+                                >
+                                    {submitting ? "Creating..." : "Create Account"}
+                                </button>
+                            </form>
+                            {errorMessage && <span className="text-red-500 mt-[-20px] text-center">{errorMessage}</span>}
+                            <span>Already have an account? <Link href="/login" className="font-bold text-green-400 hover:underline hover:text-green-600">Login</Link></span>
                         </div>
-                        <input
-                            type="email"
-                            required
-                            placeholder="Email"
-                            name="email"
-                            value={inputs.email}
-                            className="py-1 px-2 outline-none border-b-2 border-white bg-slate-900 md:text-lg w-full"
-                            onChange={(e) => handleChange(e)}
-                        />
-                        <input
-                            type="password"
-                            required
-                            placeholder="Password"
-                            name="password"
-                            value={inputs.password}
-                            className="py-1 px-2 outline-none border-b-2 border-white bg-slate-900 md:text-lg w-full"
-                            onChange={(e) => handleChange(e)}
-                        />
-                        <input
-                            type="password"
-                            required
-                            name="confirmPassword"
-                            placeholder="Confirm Password"
-                            className="py-1 px-2 outline-none border-b-2 border-white bg-slate-900 md:text-lg w-full"
-                            value={inputs.confirmPassword}
-                            onChange={(e) => handleChange(e)}
-                        />
-                        <button
-                            type="submit"
-                            className="bg-green-400 hover:bg-green-600 border border-white rounded-lg py-1 px-5 text-lg md:text-xl text-black font-semibold w-[70%]"
-                        >
-                            {submitting ? "Creating..." : "Create Account"}
-                        </button>
-                    </form>
-                    {errorMessage && <span className="text-red-500 mt-[-20px] text-center">{errorMessage}</span>}
-                    <span>Already have an account? <Link href="/login" className="font-bold text-green-400 hover:underline hover:text-green-600">Login</Link></span>
-                </div>
-                <div className="bg-[url('/assets/sign-up-mobile-bg.jpg')] flex-1 hidden md:flex bg-cover h-full"></div>
-            </div>
-        </section>
+                        <div className="bg-[url('/assets/sign-up-mobile-bg.jpg')] flex-1 hidden md:flex bg-cover h-full"></div>
+                    </div>
+                </section>
+            ) : router.replace("/")}
+        </>
     )
 }
 
